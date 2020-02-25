@@ -1,5 +1,6 @@
 /*
- * <one line to give the library's name and an idea of what it does.>
+ * Simple program that searches KDE5 contacts
+ *
  * Copyright (C) 2020  James A. Cleland <jcleland@jamescleland.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,37 +30,36 @@
 #include <AkonadiCore/ExceptionBase>
 #include <Akonadi/Contact/ContactSearchJob>
 
-//Type definitions
-using SearchJob 				= Akonadi::ContactSearchJob;
-using SearchCriterion 	= SearchJob::Criterion;
-using ContactMatch 			= SearchJob::Match;
+typedef Akonadi::ContactSearchJob 	SearchJob;
+typedef SearchJob::Criterion 				SearchCriterion;
+typedef SearchJob::Match 						ContactMatch;
 
 /**
  * @todo write docs
  */
 class SearchTask : public QObject {
 	Q_OBJECT
-
+	
 public:
 	/**
 	 * Copy constructor
 	 * @param other TODO
 	 */
 	SearchTask(const SearchTask& other);
-
+	
 	/**
 	 * Construct with criterion and match type
 	 * @param criterion specifies what field should be used to match value (default name or email)
 	 * @param match the type of match to be performed (default starts with)
 	 */
 	explicit SearchTask(SearchCriterion criterion = SearchCriterion::NameOrEmail,
-	 ContactMatch matchType = ContactMatch::StartsWithMatch);
-
+											ContactMatch matchType = ContactMatch::StartsWithMatch);
+	
 	/**
 	 * Destructor
 	 */
 	virtual ~SearchTask();
-
+	
 	/**
 	 * Assignment operator
 	 *
@@ -67,57 +67,57 @@ public:
 	 * @return TODO
 	 */
 	SearchTask& operator=(const SearchTask& other);
-
+	
 	/**
 	 * Returns the criteria value for this SearchTask instance
 	 * @return The criterion value
 	 */
 	const SearchCriterion& criterion();
-
+	
 	/**
-   * Sets criterion for searches
-   * @param criterion Const reference to criterion for search
-   */
+	 * Sets criterion for searches
+	 * @param criterion Const reference to criterion for search
+	 */
 	void setCriterion(const SearchCriterion& criterion);
-
+	
 	/**
-   * Return the match type for this search SearchTask
+	 * Return the match type for this search SearchTask
 	 * @return The match type
-   */
+	 */
 	const ContactMatch& matchType() const;
-
+	
 	/**
-   * Set the match type for this search SearchTask
+	 * Set the match type for this search SearchTask
 	 * @param matchType The match type to set
-   */
+	 */
 	void setMatchType(const ContactMatch& matchType);
-
+	
 	/**
-   * Sets the term to be searched for according to criterion and match type
+	 * Sets the term to be searched for according to criterion and match type
 	 * @param term a std::string reference containing the term to search for
-   */
+	 */
 	void setTerm(const std::string& term);
-
+	
 public Q_SLOTS:
 	/**
 	 * Search the local address book for a contact matching the criteria
 	 * specified by the search term assigned to this instance
 	 */
 	void find();
-
+	
 	/**
 	 * Slot for handling search results
 	 */
 	void processResults(KJob *job);
-
+	
 Q_SIGNALS:
 	void finished();
-
+	
 private:
-	SearchCriterion				criterion_;			/*! Search criteria/field to search for text */
-	ContactMatch					matchType_;			/*! Match type */
-	QString								term_;					/*! The term to search for */
-	SearchJob*						job_;						/*! The job representing the search to perform */
+	SearchCriterion		criterion_;			/*! Search criteria/field to search for text */
+	ContactMatch			matchType_;			/*! Match type */
+	QString						term_;					/*! The term to search for */
+	SearchJob*				job_;						/*! The job representing the search to perform */
 };
 
 
